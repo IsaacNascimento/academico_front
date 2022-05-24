@@ -5,36 +5,36 @@ import { FaCheck } from 'react-icons/fa'
 import { BsArrowLeft } from 'react-icons/bs'
 import { useForm } from 'react-hook-form';
 import professorValidator from '../../validators/professorValidator';
-import AlunoService from '../../services/academico/AlunoService'
+import ProfessorService from '../../services/academico/ProfessorService';
 
-const Aluno = () => {
+const Professor = () => {
     
     const params = useParams();
     const navigate = useNavigate();
     const {register, handleSubmit, setValue, formState: { errors },} = useForm();
-
+  
     useEffect(() => {
-        if (params.id) {
-        const alunos = AlunoService.get(params.id);
-
-        for (let campo in alunos) {
-            setValue(campo, alunos[campo]);
+      if (params.id) {
+        const professor = ProfessorService.get(params.id);
+  
+        for (let campo in professor) {
+          setValue(campo, professor[campo]);
         }
-    }
-  }, []);
-
-  function salvar(dados) {
-    if (params.id) {
-        AlunoService.update(params.id, dados);
-    } else {
-        AlunoService.create(dados);
-    }
-    navigate("/alunos");
-  } 
+      }
+    }, []);
+  
+    function salvar(dados) {
+      if (params.id) {
+        ProfessorService.update(params.id, dados);
+      } else {
+        ProfessorService.create(dados);
+      }
+      navigate("/professores");
+    }  
 
     return (
         <div>
-            <h1>Alunos</h1>
+            <h1>Professores</h1>
             <Form>
             <Form.Group className="mb-3" controlId="nome">
                     <Form.Label>Nome: </Form.Label>
@@ -43,13 +43,18 @@ const Aluno = () => {
                 </Form.Group>
                 <Form.Group className="mb-3" controlId="cpf">
                     <Form.Label>CPF: </Form.Label>
-                    <Form.Control type="numero" placeholder="Informe seu CPF" isInvalid={errors.cpf} {...register("cpf", professorValidator.cpf )} />
+                    <Form.Control type="number" placeholder="Informe seu CPF" isInvalid={errors.cpf} {...register("cpf", professorValidator.cpf )} />
                     {errors.cpf && <p style={{color: "red"}}>{errors.cpf.message}</p>}
                 </Form.Group>
                 <Form.Group className="mb-3" controlId="matricula">
                     <Form.Label>Matricula: </Form.Label>
-                    <Form.Control type="numero" placeholder="Informe sua Matricula" isInvalid={errors.matricula} {...register("matricula", professorValidator.matricula )} />
+                    <Form.Control type="number" placeholder="Informe sua Matricula" isInvalid={errors.matricula} {...register("matricula", professorValidator.matricula )} />
                     {errors.matricula && <p style={{color: "red"}}>{errors.matricula.message}</p>}
+                </Form.Group>
+                <Form.Group className="mb-3" controlId="salario">
+                    <Form.Label>Salario: </Form.Label>
+                    <Form.Control type="number" placeholder="Informe seu Salário" isInvalid={errors.salario} {...register("salario", professorValidator.salario )} />
+                    {errors.salario && <p style={{color: "red"}}>{errors.salario.message}</p>}
                 </Form.Group>
                 <Form.Group className="mb-3" controlId="email">
                     <Form.Label>E-mail: </Form.Label>
@@ -58,7 +63,7 @@ const Aluno = () => {
                 </Form.Group>
                 <Form.Group className="mb-3" controlId="cep">
                     <Form.Label>CEP: </Form.Label>
-                    <Form.Control type="text" placeholder="Informe seu CEP" isInvalid={errors.cep} {...register("cep", professorValidator.cep )} />
+                    <Form.Control type="number" placeholder="Informe seu CEP" isInvalid={errors.cep} {...register("cep", professorValidator.cep )} />
                     {errors.cep && <p style={{color: "red"}}>{errors.cep.message}</p>}
                 </Form.Group>
                 <Form.Group className="mb-3" controlId="logadouro">
@@ -73,7 +78,7 @@ const Aluno = () => {
                 </Form.Group>
                 <Form.Group className="mb-3" controlId="numero">
                     <Form.Label>Numero: </Form.Label>
-                    <Form.Control type="text" placeholder="Informe seu Numero" isInvalid={errors.numero} {...register("numero", professorValidator.numero)} />
+                    <Form.Control type="number" placeholder="Informe seu Numero" isInvalid={errors.numero} {...register("numero", professorValidator.numero)} />
                     {errors.numero && <p style={{color: "red"}}>{errors.numero.message}</p>}
                 </Form.Group>
                 <Form.Group className="mb-3" controlId="bairro">
@@ -90,4 +95,4 @@ const Aluno = () => {
     )
 }
 
-export default Aluno
+export default Professor

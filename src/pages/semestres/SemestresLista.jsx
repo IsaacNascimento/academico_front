@@ -2,51 +2,50 @@ import React from 'react'
 import { useEffect } from 'react'
 import { useState } from 'react'
 import { Container, Table } from 'react-bootstrap'
-import DisciplinaService from '../../services/academico/DisciplinaService'
 import {BsTrash, BsPencil} from 'react-icons/bs'
 import {AiOutlinePlus} from 'react-icons/ai'
 import { Link } from 'react-router-dom'
 import {AiOutlineRollback} from 'react-icons/ai'
+import SemestreService from '../../services/academico/SemestreService';
 
+const SemestresLista = () => {
 
-const DisciplinasLista = () => {
-
-    const[disciplinas, setDisciplinas] = useState ([])
+    const[salas, setSalas] = useState ([])
 
     useEffect(()=> {
-        setDisciplinas(DisciplinaService.getAll())
+        setSalas(SemestreService.getAll())
     }, [])
 
     function apagar(id) {
       if(window.confirm('Quer apagar a parada ?'))
-      DisciplinaService.delete(id)
-      setDisciplinas(DisciplinaService.getAll())
+      SemestreService.delete(id)
+      setSalas(SemestreService.getAll())
     }
 
-    console.log(disciplinas);
+    console.log(SemestreService);
     
   return (
     <div>
         <Container>
-        <h1>Disciplinas</h1>
-        <Link className='btn btn-success' to={'/disciplinas/create'}><AiOutlinePlus/> Novo</Link>
+        <h1>Semestre</h1>
+        <Link className='btn btn-success' to={'/semestres/create'}><AiOutlinePlus/> Novo</Link>
         <Table className="mt-3" striped bordered hover>
          <thead>
         <tr>
             <th>#</th>
             <th>Nome</th>
-            <th>Curso</th>
+            <th>Data de inicio do curso</th>
         </tr>
         </thead>
         <tbody>
-            {disciplinas.map((item, i) => (
+            {salas.map((item, i) => (
                 <tr key={i}>
                 <td>
-                <Link to={'/disciplinas/' + i}><BsPencil className='text-primary'/></Link>{"  "}
+                <Link to={'/semestres/' + i}><BsPencil className='text-primary'/></Link>{"  "}
                 <BsTrash onClick={() => apagar (i)} className='text-danger'/>
                 </td>
                 <td>{item.nome}</td>
-                <td>{item.curso}</td>
+                <td>{item.datainicio}</td>
               </tr>
             ))}
         </tbody>
@@ -57,4 +56,4 @@ const DisciplinasLista = () => {
   )
 }
 
-export default DisciplinasLista
+export default SemestresLista

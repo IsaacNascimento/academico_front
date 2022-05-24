@@ -2,11 +2,11 @@ const disciplinaValidator = {
     nome: {
         required: "O campo Nome é Obrigatório",
         minLength: {
-            value: 3,
+            value: 6,
             message: "Qtd mínima de caracteres não informado"
         },
         maxLength: {
-            value: 5,
+            value: 8,
             message: "Qtd máxima de caracteres ultrapassada"
         },
         min: {

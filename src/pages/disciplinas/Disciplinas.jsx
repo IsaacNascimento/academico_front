@@ -16,6 +16,7 @@ const Disciplinas = () => {
     DisciplinaService.create(dados)
     navigate('/disciplinas')
   }
+  
 
   return (
     <div>

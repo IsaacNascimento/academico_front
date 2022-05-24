@@ -1,18 +1,36 @@
-import React, { useState } from 'react'
+import React, { useEffect } from 'react'
 import { Button, Form } from 'react-bootstrap'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate, useParams } from 'react-router-dom'
 import { FaCheck } from 'react-icons/fa'
 import { BsArrowLeft } from 'react-icons/bs'
-import apiAcademico from '../../services/apiAcademico'
 import { useForm } from 'react-hook-form'
+import cursoValidator from '../../validators/cursoValidator'
+import CursoService from '../../services/academico/CursoService'
 
 const CursosForm = () => {
 
-    const { register, handleSubmit, formState: { errors } } = useForm()
+    const params = useParams();
+    const navigate = useNavigate();
+    const {register, handleSubmit, setValue, formState: { errors },} = useForm();
 
-    function salvar(dados){
-        console.log(dados)
+    useEffect(() => {
+        if (params.id) {
+        const cursos = CursoService.get(params.id);
+
+        for (let campo in cursos) {
+            setValue(campo, cursos[campo]);
+        }
     }
+  }, []);
+
+  function salvar(dados) {
+    if (params.id) {
+        CursoService.update(params.id, dados);
+    } else {
+        CursoService.create(dados);
+    }
+    navigate("/cursos");
+  }
 
     return (
         <div>
@@ -20,16 +38,18 @@ const CursosForm = () => {
             <Form>
                 <Form.Group className="mb-3" controlId="nome">
                     <Form.Label>Nome: </Form.Label>
-                    <Form.Control type="text" {...register("nome", {required: 'Campo Obrigatório'})} />
-                    {errors.nome && <span className="text-danger">{errors.nome.message}</span>}
+                    <Form.Control type="text" placeholder="Informe seu Nome do curso" isInvalid={errors.nome} {...register("nome", cursoValidator.nome)} />
+                    {errors.nome && <p style={{color: "red"}}>{errors.nome.message}</p>}
                 </Form.Group>
-                <Form.Group className="mb-3" controlId="duracao">
+                <Form.Group className="mb-3" controlId="curso">
                     <Form.Label>Duração: </Form.Label>
-                    <Form.Control type="number" {...register("duracao")} />
+                    <Form.Control type="number" placeholder="Informe a Duração do curso" isInvalid={errors.curso} {...register("curso", cursoValidator.curso)} />
+                    {errors.curso && <span className="text-danger">{errors.curso.message}</span>}
                 </Form.Group>
                 <Form.Group className="mb-3" controlId="modalidade">
                     <Form.Label>Modalidade: </Form.Label>
-                    <Form.Control type="text" {...register("modalidade")} />
+                    <Form.Control type="text" placeholder="Informe a Modalidade curso" isInvalid={errors.modalidade} {...register("modalidade", cursoValidator.modalidade)} />
+                    {errors.modalidade && <p style={{color: "red"}}>{errors.modalidade.message}</p>}
                 </Form.Group>
                 <div className="text-center">
                     <Button onClick={handleSubmit(salvar)}><FaCheck /> Salvar</Button>{' '}

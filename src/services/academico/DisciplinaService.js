@@ -1,26 +1,30 @@
 class DisciplinaService {
     getAll(){
-        const disciplinas = localStorage.getItem('disciplinas')
-        return disciplinas ? JSON.parse(disciplinas) : []
+        const disciplina = localStorage.getItem('disciplina')
+        return disciplina ? JSON.parse(disciplina) : []
     }
 
     get(id){
-
+        const disciplina = this.getAll()
+        return disciplina[id]
     }
 
     create(dados){
-        const disciplinas = this.getAll()
-        disciplinas.push(dados)
-        localStorage.setItem('disciplinas', JSON.stringify(disciplinas))
+        const disciplina = this.getAll()
+        disciplina.push(dados)
+        localStorage.setItem('disciplina', JSON.stringify(disciplina))
     }
 
     update(id, dados){
-
+        const disciplina = this.getAll()
+        disciplina.splice(id, 1, dados)
+        localStorage.setItem('disciplina', JSON.stringify(disciplina))
     }
 
     delete(id){
-
+        const disciplina = this.getAll()
+        disciplina.splice(id, 1)
+        localStorage.setItem('disciplina', JSON.stringify(disciplina))
     }
 }
-
 export default new DisciplinaService()
